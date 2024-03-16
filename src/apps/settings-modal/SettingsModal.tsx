@@ -208,7 +208,7 @@ export function SettingsModal(props: {
       </Tabs>
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', padding: '1rem' }}>
-        <UserButton />
+        <UserButton afterSignOutUrl='/' />
       </div>
 
       <Divider />
