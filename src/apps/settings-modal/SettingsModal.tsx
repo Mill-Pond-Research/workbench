@@ -21,6 +21,8 @@ import { AppChatSettingsUI } from './settings-ui/AppChatSettingsUI';
 import { UxLabsSettings } from './UxLabsSettings';
 import { VoiceSettings } from './VoiceSettings';
 
+import { UserButton } from "@clerk/nextjs";
+
 
 // styled <AccordionGroup variant='plain'> into a Topics component
 const Topics = styled(AccordionGroup)(({ theme }) => ({
@@ -204,6 +206,10 @@ export function SettingsModal(props: {
           </Topics>
         </TabPanel>
       </Tabs>
+
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', padding: '1rem' }}>
+        <UserButton />
+      </div>
 
       <Divider />
 

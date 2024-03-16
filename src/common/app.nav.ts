@@ -20,6 +20,7 @@ import TextsmsIcon from '@mui/icons-material/Textsms';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import WorkspacesOutlinedIcon from '@mui/icons-material/WorkspacesOutlined';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 // Link icons
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { DiscordIcon } from '~/common/components/icons/3rdparty/DiscordIcon';
@@ -67,7 +68,7 @@ export interface NavItemApp extends ItemBase {
 
 export interface NavItemModal extends ItemBase {
   type: 'modal',
-  overlayId: 'settings' | 'models',
+  overlayId: 'settings' | 'models' | 'account'
 }
 
 export interface NavItemExtLink extends ItemBase {
@@ -209,6 +210,12 @@ export const navItems: {
       icon: BuildCircleIcon,
       type: 'modal',
       overlayId: 'models',
+    },
+    {
+      name: 'Account Settings',
+      icon: AccountCircleIcon,
+      type: 'modal',
+      overlayId: 'account',
     },
     {
       name: 'Preferences',
