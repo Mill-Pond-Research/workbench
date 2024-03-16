@@ -21,6 +21,7 @@ import { ProviderTRPCQuerySettings } from '~/common/providers/ProviderTRPCQueryS
 import { ProviderTheming } from '~/common/providers/ProviderTheming';
 import { hasGoogleAnalytics, OptionalGoogleAnalytics } from '~/common/components/GoogleAnalytics';
 import { isVercelFromFrontend } from '~/common/util/pwaUtils';
+import { ClerkProvider } from "@clerk/nextjs";
 
 
 const MyApp = ({ Component, emotionCache, pageProps }: MyAppProps) =>
@@ -30,7 +31,7 @@ const MyApp = ({ Component, emotionCache, pageProps }: MyAppProps) =>
       <title>{Brand.Title.Common}</title>
       <meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no' />
     </Head>
-
+    <ClerkProvider>
     <ProviderTheming emotionCache={emotionCache}>
       <ProviderSingleTab>
         <ProviderTRPCQuerySettings>
@@ -45,6 +46,7 @@ const MyApp = ({ Component, emotionCache, pageProps }: MyAppProps) =>
         </ProviderTRPCQuerySettings>
       </ProviderSingleTab>
     </ProviderTheming>
+    </ClerkProvider>
 
     {isVercelFromFrontend && <VercelAnalytics debug={false} />}
     {isVercelFromFrontend && <VercelSpeedInsights debug={false} sampleRate={1 / 2} />}
