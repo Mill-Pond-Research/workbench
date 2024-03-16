@@ -1,9 +1,9 @@
 {
-  "name": "big-AGI",
-  "short_name": "big-AGI",
+  "name": "OpenWorkbench",
+  "short_name": "OpenWorkbench",
   "theme_color": "#32383E",
   "background_color": "#9FA6AD",
-  "description": "Personal AGI App",
+  "description": "Personal AI",
   "display": "standalone",
   "start_url": "/",
   "icons": [

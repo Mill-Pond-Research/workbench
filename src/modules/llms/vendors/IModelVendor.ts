@@ -19,7 +19,7 @@ export interface IModelVendor<TSourceSetup = unknown, TAccess = unknown, TLLMOpt
   readonly location: 'local' | 'cloud';
   readonly instanceLimit: number;
   readonly hasFreeModels?: boolean;
-  readonly hasBackendCap?: (backendCapabilities: BackendCapabilities) => boolean; // used to show a 'geen checkmark' in the list of vendors when adding sources
+  readonly hasBackendCap?: (backendCapabilities: BackendCapabilities) => boolean; // used to show a 'green checkmark' in the list of vendors when adding sources
 
   // components
   readonly Icon: React.FunctionComponent<SvgIconProps>;

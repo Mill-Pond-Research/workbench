@@ -8,8 +8,11 @@ FROM base AS deps
 WORKDIR /app
 
 # Dependency files
+COPY .env ./
 COPY package*.json ./
 COPY src/server/prisma ./src/server/prisma
+
+
 
 # Install dependencies, including dev (release builds should use npm ci)
 ENV NODE_ENV development
