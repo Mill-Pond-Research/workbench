@@ -8,23 +8,22 @@
  */
 export const Brand = {
   Title: {
-    Base: 'big-AGI',
-    Common: (process.env.NODE_ENV === 'development' ? '[DEV] ' : '') + 'big-AGI',
+    Base: 'OpenWorkbench',
+    Common: (process.env.NODE_ENV === 'development' ? '[DEV] ' : '') + 'OpenWorkbench',
   },
   Meta: {
-    Description: 'Launch big-AGI to unlock the full potential of AI, with precise control over your data and models. Voice interface, AI personas, advanced features, and fun UX.',
-    SiteName: 'big-AGI | Precision AI for You',
+    Description: 'Reimagine Business Intelligence',
+    SiteName: 'OpenWorkbench | Precision AI for You',
     ThemeColor: '#32383E',
-    TwitterSite: '@enricoros',
+    TwitterSite: '@MillPondAI',
   },
   URIs: {
-    Home: 'https://big-agi.com',
+    Home: 'https://millpondresearch.com/',
     // App: 'https://get.big-agi.com',
-    CardImage: 'https://big-agi.com/icons/card-dark-1200.png',
-    OpenRepo: 'https://github.com/enricoros/big-agi',
-    OpenProject: 'https://github.com/users/enricoros/projects/4',
-    SupportInvite: 'https://discord.gg/MkH4qj2Jp9',
+    CardImage: 'https://millpondresearch.com/img/Mill_Pond_Research-Logo-Horizontal-200px-tall.png',
+    OpenRepo: 'https://github.com/Mill-Pond-Research',
+    SupportInvite: 'https://discord.gg/favv5rn7w3',
     // Twitter: 'https://www.twitter.com/enricoros',
-    PrivacyPolicy: 'https://big-agi.com/privacy',
+    PrivacyPolicy: 'https://www.millpondresearch.com/privacy-policy.html',
   },
 } as const;
