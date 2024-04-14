@@ -1,7 +1,7 @@
 import { Webhook } from "svix";
 import { buffer} from "micro";
 import { env } from "~/server/env.mjs";
-import { prismaDb } from "~/server/prisma/prismaDb";
+import { db } from "~/server/prisma/db";
 
 import type { WebhookEvent} from "@clerk/nextjs/server";
 import type { NextApiRequest, NextApiResponse} from "next";
@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (eventType) {
         case "user.created": {
             console.log(`User created: ${id}`);
-            const count = await prismaDb.account.count({
+            const count = await db.account.count({
                 where: {
                     userId: id!,
                 },
@@ -66,7 +66,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             if (!count) {
                 console.log(`Creating account for user: ${id}`);
-                await prismaDb.account.create({
+                await db.account.create({
                     data: {
                         userId: id!,
                     },

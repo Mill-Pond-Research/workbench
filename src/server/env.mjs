@@ -8,6 +8,9 @@ export const env = createEnv({
    * Will throw if you access these variables on the client.
    */
   server: {
+    NODE_ENV: z
+      .enum(["development", "test", "production"])
+      .default("development"),
 
     // Backend Postgres, for optional storage via Prisma
     POSTGRES_PRISMA_URL: z.string().optional(),

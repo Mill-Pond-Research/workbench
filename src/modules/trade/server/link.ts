@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { LinkStorageDataType, LinkStorageVisibility } from '@prisma/client';
 
-import { prismaDb } from '~/server/prisma/prismaDb';
+import { db } from '~/server/prisma/db';
 import { publicProcedure } from '~/server/api/trpc.server';
 
 
@@ -103,7 +103,7 @@ export const storagePutProcedure =
 
       const { ownerId, dataType, dataTitle, dataObject, expiresSeconds } = input;
 
-      const { id: objectId, ...rest } = await prismaDb.linkStorage.create({
+      const { id: objectId, ...rest } = await db.linkStorage.create({
         select: {
           id: true,
           ownerId: true,
@@ -146,7 +146,7 @@ export const storageGetProcedure =
     .query(async ({ input: { objectId, ownerId } }) => {
 
       // read object
-      const result = await prismaDb.linkStorage.findUnique({
+      const result = await db.linkStorage.findUnique({
         select: {
           dataType: true,
           dataTitle: true,
@@ -181,7 +181,7 @@ export const storageGetProcedure =
       // increment the read count
       // NOTE: fire-and-forget; we don't care about the result
       {
-        prismaDb.linkStorage.update({
+        db.linkStorage.update({
           select: {
             id: true,
           },
@@ -217,7 +217,7 @@ export const storageMarkAsDeletedProcedure =
     .output(storageDeleteOutputSchema)
     .mutation(async ({ input: { objectId, ownerId, deletionKey } }) => {
 
-      const result = await prismaDb.linkStorage.updateMany({
+      const result = await db.linkStorage.updateMany({
         where: {
           id: objectId,
           ownerId: ownerId || undefined,
@@ -248,7 +248,7 @@ export const storageUpdateDeletionKeyProcedure =
     .output(storageUpdateDeletionKeyOutputSchema)
     .mutation(async ({ input: { objectId, ownerId, formerKey, newKey } }) => {
 
-      const result = await prismaDb.linkStorage.updateMany({
+      const result = await db.linkStorage.updateMany({
         where: {
           id: objectId,
           ownerId: ownerId || undefined,
