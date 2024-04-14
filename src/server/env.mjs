@@ -12,6 +12,10 @@ export const env = createEnv({
     // Backend Postgres, for optional storage via Prisma
     POSTGRES_PRISMA_URL: z.string().optional(),
     POSTGRES_URL_NON_POOLING: z.string().optional(),
+
+    CLERK_SECRET_KEY: z.string(),
+    CLERK_WEBHOOK_SECRET: z.string(),
+
     // Backend MongoDB, for a more complete developer data platform.
     MDB_URI: z.string().optional(),
 
@@ -97,6 +101,8 @@ export const env = createEnv({
     // Frontend: server to use for PlantUML rendering
     NEXT_PUBLIC_PLANTUML_SERVER_URL: z.string().url().optional(),
 
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
+
   },
 
   onValidationError: error => {
@@ -111,5 +117,8 @@ export const env = createEnv({
   experimental__runtimeEnv: {
     NEXT_PUBLIC_GA4_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID,
     NEXT_PUBLIC_PLANTUML_SERVER_URL: process.env.NEXT_PUBLIC_PLANTUML_SERVER_URL,
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
   },
 });

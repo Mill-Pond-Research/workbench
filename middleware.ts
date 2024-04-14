@@ -5,7 +5,7 @@ export default authMiddleware({
     publicRoutes: ["/api/trpc-edge/backend.listCapabilities"],
     // Routes that can always be accessed, and have
     // no authentication information
-    ignoredRoutes: [],
+    ignoredRoutes: ["/api/webhooks(.*)",],
   });
    
 export const config = {
