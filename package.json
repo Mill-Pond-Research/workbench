@@ -57,6 +57,7 @@
     "react-timeago": "^7.2.0",
     "remark-gfm": "^4.0.0",
     "sharp": "^0.33.2",
+    "stripe": "^15.1.0",
     "superjson": "^2.2.1",
     "svix": "^1.21.0",
     "tesseract.js": "^5.0.5",

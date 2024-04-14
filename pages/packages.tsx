@@ -3,6 +3,9 @@ import { SignOutButton, useUser } from "@clerk/nextjs";
 import { getAuth } from "@clerk/nextjs/server";
 import type { GetServerSideProps } from "next";
 
+import { apiQuery as api } from '~/common/util/trpc.client';
+
+
 // @ts-expect-error leave this alone
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { userId } = getAuth(ctx.req);
@@ -27,6 +30,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const PackagesPage = () => {
+  const { isLoaded } = useUser();
+
+  const { data: subscriptionSessionData } = api.stripe.getSubscriptionCheckoutURL.useQuery(void {}, {
+    enabled: isLoaded,
+  });
+
+  const handleGoToSubscriptionCheckoutSession = async () => {
+    const redirectURL = subscriptionSessionData?.redirectURL;
+
+    if (redirectURL) {
+      window.location.assign(redirectURL);
+    }
+  };
 
   return (
     <section className="mt-10 flex flex-col gap-8">
@@ -43,22 +59,13 @@ const PackagesPage = () => {
       <div className="flex gap-2.5">
         <div className="flex h-40 w-1/2 flex-col justify-between border border-neutral-950 bg-neutral-100 p-5">
           <h2 className="text-center text-2xl font-extrabold tracking-tight">
-            $10 a Month
+            $40 a Month
           </h2>
           <button
+            onClick={() => handleGoToSubscriptionCheckoutSession()}
             className="border border-indigo-950 bg-indigo-700 py-3 text-xl font-extrabold text-neutral-100"
           >
             Subscribe
-          </button>
-        </div>
-        <div className="flex h-40 w-1/2 flex-col justify-between border border-neutral-950 bg-neutral-100 p-5">
-          <h2 className="text-center text-2xl font-extrabold tracking-tight">
-            Lifetime for $150
-          </h2>
-          <button
-            className="border border-sky-950 bg-sky-700 py-3 text-xl font-extrabold text-neutral-100"
-          >
-            Purchase
           </button>
         </div>
       </div>

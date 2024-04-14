@@ -9,6 +9,7 @@ import { llmOllamaRouter } from '~/modules/llms/server/ollama/ollama.router';
 import { llmOpenAIRouter } from '~/modules/llms/server/openai/openai.router';
 import { prodiaRouter } from '~/modules/t2i/prodia/prodia.router';
 import { youtubeRouter } from '~/modules/youtube/youtube.router';
+import { stripeRouter } from './routers/stripe';
 
 /**
  * Primary rooter, and will be sitting on an Edge Runtime.
@@ -23,6 +24,7 @@ export const appRouterEdge = createTRPCRouter({
   llmOpenAI: llmOpenAIRouter,
   prodia: prodiaRouter,
   youtube: youtubeRouter,
+  stripe: stripeRouter,
 });
 
 // export type definition of API
