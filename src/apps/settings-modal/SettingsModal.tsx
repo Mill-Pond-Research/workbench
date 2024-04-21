@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import type { SxProps } from '@mui/joy/styles/types';
 import { Accordion, AccordionDetails, accordionDetailsClasses, AccordionGroup, AccordionSummary, accordionSummaryClasses, Avatar, Button, Divider, ListItemContent, Stack, styled, Tab, tabClasses, TabList, TabPanel, Tabs } from '@mui/joy';
 import AddIcon from '@mui/icons-material/Add';
 import ScienceIcon from '@mui/icons-material/Science';
@@ -20,8 +21,6 @@ import { AppChatSettingsAI } from './AppChatSettingsAI';
 import { AppChatSettingsUI } from './settings-ui/AppChatSettingsUI';
 import { UxLabsSettings } from './UxLabsSettings';
 import { VoiceSettings } from './VoiceSettings';
-
-import { UserButton } from "@clerk/nextjs";
 
 
 // styled <AccordionGroup variant='plain'> into a Topics component
@@ -99,6 +98,13 @@ function Topic(props: { title?: string, icon?: string | React.ReactNode, startCo
 }
 
 
+const settingTaxSx: SxProps = {
+  fontFamily: 'body',
+  flex: 1,
+  p: 0,
+  m: 0,
+};
+
 /**
  * Component that allows the User to modify the application settings,
  * persisted on the client via localStorage.
@@ -112,8 +118,6 @@ export function SettingsModal(props: {
 
   // external state
   const isMobile = useIsMobile();
-
-  const tabFixSx = { fontFamily: 'body', flex: 1, p: 0, m: 0 };
 
   return (
     <GoodModal
@@ -149,10 +153,10 @@ export function SettingsModal(props: {
             },
           }}
         >
-          <Tab disableIndicator value={PreferencesTab.Chat} sx={tabFixSx}>Chat</Tab>
-          <Tab disableIndicator value={PreferencesTab.Voice} sx={tabFixSx}>Voice</Tab>
-          <Tab disableIndicator value={PreferencesTab.Draw} sx={tabFixSx}>Draw</Tab>
-          <Tab disableIndicator value={PreferencesTab.Tools} sx={tabFixSx}>Tools</Tab>
+          <Tab disableIndicator value={PreferencesTab.Chat} sx={settingTaxSx}>Chat</Tab>
+          <Tab disableIndicator value={PreferencesTab.Voice} sx={settingTaxSx}>Voice</Tab>
+          <Tab disableIndicator value={PreferencesTab.Draw} sx={settingTaxSx}>Draw</Tab>
+          <Tab disableIndicator value={PreferencesTab.Tools} sx={settingTaxSx}>Tools</Tab>
         </TabList>
 
         <TabPanel value={PreferencesTab.Chat} variant='outlined' sx={{ p: 'var(--Tabs-gap)', borderRadius: 'md' }}>
@@ -206,10 +210,6 @@ export function SettingsModal(props: {
           </Topics>
         </TabPanel>
       </Tabs>
-
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', padding: '1rem' }}>
-        <UserButton afterSignOutUrl='/' />
-      </div>
 
       <Divider />
 

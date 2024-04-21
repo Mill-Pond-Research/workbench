@@ -1,7 +1,7 @@
 import { shallow } from 'zustand/shallow';
 
 import type { DFolder } from '~/common/state/store-folders';
-import { conversationTitle, DConversationId, messageHasUserFlag, useChatStore } from '~/common/state/store-chats';
+import { conversationTitle, DConversationId, DMessageUserFlag, messageHasUserFlag, messageUserFlagToEmoji, useChatStore } from '~/common/state/store-chats';
 
 import type { ChatNavigationItemData } from './ChatDrawerItem';
 
@@ -11,6 +11,8 @@ const SEARCH_MIN_CHARS = 3;
 
 
 export type ChatNavGrouping = false | 'date' | 'persona';
+
+export type ChatSearchSorting = 'frequency' | 'date';
 
 interface ChatNavigationGroupData {
   type: 'nav-item-group',
@@ -66,12 +68,20 @@ function getTimeBucketEn(currentTime: number, midnightTime: number): string {
   }
 }
 
+export function isDrawerSearching(filterByQuery: string): { isSearching: boolean, lcTextQuery: string } {
+  const lcTextQuery = filterByQuery.trim().toLowerCase();
+  return {
+    isSearching: lcTextQuery.length >= SEARCH_MIN_CHARS,
+    lcTextQuery,
+  };
+}
+
 
 /*
  * Optimization: return a reduced version of the DConversation object for 'Drawer Items' purposes,
  * to avoid unnecessary re-renders on each new character typed by the assistant
  */
-export function useChatNavRenderItems(
+export function useChatDrawerRenderItems(
   activeConversationId: DConversationId | null,
   chatPanesConversationIds: DConversationId[],
   filterByQuery: string,
@@ -79,6 +89,7 @@ export function useChatNavRenderItems(
   allFolders: DFolder[],
   filterHasStars: boolean,
   grouping: ChatNavGrouping,
+  searchSorting: ChatSearchSorting,
   showRelativeSize: boolean,
 ): {
   renderNavItems: ChatRenderItemData[],
@@ -94,8 +105,7 @@ export function useChatNavRenderItems(
       const selectedConversations = !activeFolder ? conversations : conversations.filter(_c => activeFolder.conversationIds.includes(_c.id));
 
       // filter 2: preparation: lowercase the query
-      const lcTextQuery = filterByQuery.trim().toLowerCase();
-      const isSearching = lcTextQuery.length >= SEARCH_MIN_CHARS;
+      const { isSearching, lcTextQuery } = isDrawerSearching(filterByQuery);
 
       // transform (the conversations into ChatNavigationItemData) + filter2 (if searching)
       const chatNavItems = selectedConversations
@@ -113,6 +123,11 @@ export function useChatNavRenderItems(
             searchFrequency = titleFrequency + messageFrequency;
           }
 
+          // union of message flags -> emoji string
+          const allFlags = new Set<DMessageUserFlag>();
+          _c.messages.forEach(_m => _m.userFlags?.forEach(flag => allFlags.add(flag)));
+          const userFlagsSummary = !allFlags.size ? undefined : Array.from(allFlags).map(messageUserFlagToEmoji).join('');
+
           // create the ChatNavigationData
           return {
             type: 'nav-item-chat-data',
@@ -121,6 +136,7 @@ export function useChatNavRenderItems(
             isAlsoOpen,
             isEmpty: !_c.messages.length && !_c.userTitle,
             title,
+            userFlagsSummary,
             folder: !allFolders.length
               ? undefined                             // don't show folder select if folders are disabled
               : _c.id === activeConversationId        // only show the folder for active conversation(s)
@@ -140,7 +156,8 @@ export function useChatNavRenderItems(
 
 
       // [sort by frequency, don't group] if there's a search query
-      chatNavItems.sort((a, b) => b.searchFrequency - a.searchFrequency);
+      if (isSearching && searchSorting === 'frequency')
+        chatNavItems.sort((a, b) => b.searchFrequency - a.searchFrequency);
 
       // Render List
       let renderNavItems: ChatRenderItemData[] = chatNavItems;
@@ -212,6 +229,7 @@ export function useChatNavRenderItems(
       return a.renderNavItems.length === b.renderNavItems.length
         && a.renderNavItems.every((_a, i) => shallow(_a, b.renderNavItems[i]))
         && shallow(a.filteredChatIDs, b.filteredChatIDs)
+        && a.filteredChatsCount === b.filteredChatsCount
         && a.filteredChatsAreEmpty === b.filteredChatsAreEmpty
         && a.filteredChatsBarBasis === b.filteredChatsBarBasis
         && a.filteredChatsIncludeActive === b.filteredChatsIncludeActive;
