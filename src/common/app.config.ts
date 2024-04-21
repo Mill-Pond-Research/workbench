@@ -25,5 +25,6 @@ export const Brand = {
     SupportInvite: 'https://discord.gg/favv5rn7w3',
     // Twitter: 'https://www.twitter.com/enricoros',
     PrivacyPolicy: 'https://www.millpondresearch.com/privacy-policy.html',
+    OpenProject: ''
   },
 } as const;
