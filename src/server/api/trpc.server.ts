@@ -45,7 +45,12 @@ const createInnerTRPCContext = async({ auth }: AuthContext) => {
 // };
 
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({auth: getAuth(opts.req)});
+  return {
+    ...createInnerTRPCContext({
+      auth: getAuth(opts.req)
+    }),
+    hostName: 'localhost', // TODO: get from req
+  }
 };
 /**
  * 2. INITIALIZATION
