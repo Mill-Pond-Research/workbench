@@ -26,6 +26,7 @@ const createInnerTRPCContext = async({ auth }: AuthContext) => {
   return {
     db,
     auth,
+    hostName: 'localhost', // TODO: get from req
   };
 };
 
