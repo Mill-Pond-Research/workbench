@@ -8,6 +8,7 @@ const handlerEdgeRoutes = (req: Request) =>
     router: appRouterEdge,
     endpoint: '/api/trpc-edge',
     req,
+    // @ts-expect-error
     createContext: createTRPCContext,
     onError:
       process.env.NODE_ENV === 'development'
