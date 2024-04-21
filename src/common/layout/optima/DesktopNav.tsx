@@ -150,6 +150,7 @@ export function DesktopNav(props: { component: React.ElementType, currentApp?: N
       const isAttractive = noLLMs && item.overlayId === 'models';
 
       return (
+        <>
         <Tooltip followCursor key={'n-m-' + item.overlayId} title={isAttractive ? 'Add Language Models - REQUIRED' : item.name}>
           <DesktopNavIcon
             variant={isActive ? 'soft' : undefined}
@@ -160,6 +161,7 @@ export function DesktopNav(props: { component: React.ElementType, currentApp?: N
 
           </DesktopNavIcon>
         </Tooltip>
+        </>
       );
     });
   }, [noLLMs, openModelsSetup, openPreferencesTab, showModelsSetup, showPreferencesTab]);

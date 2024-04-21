@@ -216,6 +216,12 @@ export const navItems: {
       type: 'modal',
       overlayId: 'settings',
     },
+    {
+      name: 'Account',
+      icon: () => null,
+      type: 'modal',
+      overlayId: 'account',
+    }
   ],
 
   // External links
