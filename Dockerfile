@@ -12,8 +12,6 @@ COPY .env ./
 COPY package*.json ./
 COPY src/server/prisma ./src/server/prisma
 
-
-
 # Install dependencies, including dev (release builds should use npm ci)
 ENV NODE_ENV development
 RUN npm ci
@@ -53,6 +51,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nextjs:nodejs /app/src/server/prisma ./src/server/prisma
 COPY .env ./
+
 # Minimal ENV for production
 ENV NODE_ENV production
 ENV PATH $PATH:/app/node_modules/.bin
