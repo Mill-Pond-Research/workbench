@@ -18,6 +18,8 @@ import { InvertedBar, InvertedBarCornerItem } from './components/InvertedBar';
 import { useOptimaDrawers } from './useOptimaDrawers';
 import { useOptimaLayout } from './useOptimaLayout';
 
+import { UserButton } from "@clerk/nextjs";
+
 
 const desktopNavBarSx: SxProps = {
   zIndex: themeZIndexDesktopNav,
@@ -139,6 +141,7 @@ export function DesktopNav(props: { component: React.ElementType, currentApp?: N
       const stateActionMap: { [key: string]: { isActive: boolean, showModal: () => void } } = {
         settings: { isActive: !!showPreferencesTab, showModal: () => openPreferencesTab() },
         models: { isActive: showModelsSetup, showModal: openModelsSetup },
+        account: { isActive: false, showModal: () => console.log('Action missing for', item.overlayId) },
         0: { isActive: false, showModal: () => console.log('Action missing for ', item.overlayId) },
       };
       const { isActive, showModal } = stateActionMap[item.overlayId] ?? stateActionMap[0];
@@ -153,7 +156,8 @@ export function DesktopNav(props: { component: React.ElementType, currentApp?: N
             onClick={showModal}
             className={`${navItemClasses.typeLinkOrModal} ${isActive ? navItemClasses.active : ''} ${isAttractive ? navItemClasses.attractive : ''}`}
           >
-            {(isActive && item.iconActive) ? <item.iconActive /> : <item.icon />}
+            { item.overlayId === 'account' ? <div className='w-1 h-1'><UserButton /></div> : (isActive && item.iconActive) ? <item.iconActive /> : <item.icon />}
+
           </DesktopNavIcon>
         </Tooltip>
       );

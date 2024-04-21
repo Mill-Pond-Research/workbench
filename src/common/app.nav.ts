@@ -67,7 +67,7 @@ export interface NavItemApp extends ItemBase {
 
 export interface NavItemModal extends ItemBase {
   type: 'modal',
-  overlayId: 'settings' | 'models',
+  overlayId: 'settings' | 'models' | 'account',
 }
 
 export interface NavItemExtLink extends ItemBase {
