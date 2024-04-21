@@ -8,10 +8,23 @@ export const env = createEnv({
    * Will throw if you access these variables on the client.
    */
   server: {
+    NODE_ENV: z
+      .enum(["development", "test", "production"])
+      .default("development"),
 
     // Backend Postgres, for optional storage via Prisma
     POSTGRES_PRISMA_URL: z.string().optional(),
     POSTGRES_URL_NON_POOLING: z.string().optional(),
+
+    CLERK_SECRET_KEY: z.string(),
+    CLERK_WEBHOOK_SECRET: z.string(),
+
+    STRIPE_PUBLIC_KEY: z.string(),
+    STRIPE_SECRET_KEY: z.string(),
+    STRIPE_WEBHOOK_SECRET: z.string(),
+    STRIPE_SUBSCRIPTION_PRICE_ID: z.string(),
+    URL: z.string().url(),
+
     // Backend MongoDB, for a more complete developer data platform.
     MDB_URI: z.string().optional(),
 
@@ -97,6 +110,8 @@ export const env = createEnv({
     // Frontend: server to use for PlantUML rendering
     NEXT_PUBLIC_PLANTUML_SERVER_URL: z.string().url().optional(),
 
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
+
   },
 
   onValidationError: error => {
@@ -108,8 +123,48 @@ export const env = createEnv({
   emptyStringAsUndefined: true,
 
   // with Noext.JS >= 13.4.4 we'd only need to destructure client variables
-  experimental__runtimeEnv: {
+  runtimeEnv: {
+    NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_GA4_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID,
     NEXT_PUBLIC_PLANTUML_SERVER_URL: process.env.NEXT_PUBLIC_PLANTUML_SERVER_URL,
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
+    STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    STRIPE_SUBSCRIPTION_PRICE_ID: process.env.STRIPE_SUBSCRIPTION_PRICE_ID,
+    URL: process.env.URL,
+    POSTGRES_PRISMA_URL: process.env.POSTGRES_PRISMA_URL,
+    POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING,
+    MDB_URI: process.env.MDB_URI,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    OPENAI_API_HOST: process.env.OPENAI_API_HOST,
+    OPENAI_API_ORG_ID: process.env.OPENAI_API_ORG_ID,
+    AZURE_OPENAI_API_ENDPOINT: process.env.AZURE_OPENAI_API_ENDPOINT,
+    AZURE_OPENAI_API_KEY: process.env.AZURE_OPENAI_API_KEY,
+    ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+    ANTHROPIC_API_HOST: process.env.ANTHROPIC_API_HOST,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    GROQ_API_KEY: process.env.GROQ_API_KEY,
+    LOCALAI_API_HOST: process.env.LOCALAI_API_HOST,
+    LOCALAI_API_KEY: process.env.LOCALAI_API_KEY,
+    MISTRAL_API_KEY: process.env.MISTRAL_API_KEY,
+    OLLAMA_API_HOST: process.env.OLLAMA_API_HOST,
+    OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY,
+    PERPLEXITY_API_KEY: process.env.PERPLEXITY_API_KEY,
+    TOGETHERAI_API_KEY: process.env.TOGETHERAI_API_KEY,
+    HELICONE_API_KEY: process.env.HELICONE_API_KEY,
+    ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY,
+    ELEVENLABS_API_HOST: process.env.ELEVENLABS_API_HOST,
+    ELEVENLABS_VOICE_ID: process.env.ELEVENLABS_VOICE_ID,
+    PRODIA_API_KEY: process.env.PRODIA_API_KEY,
+    GOOGLE_CLOUD_API_KEY: process.env.GOOGLE_CLOUD_API_KEY,
+    GOOGLE_CSE_ID: process.env.GOOGLE_CSE_ID,
+    PUPPETEER_WSS_ENDPOINT: process.env.PUPPETEER_WSS_ENDPOINT,
+    BACKEND_ANALYTICS: process.env.BACKEND_ANALYTICS,
+    HTTP_BASIC_AUTH_USERNAME: process.env.HTTP_BASIC_AUTH_USERNAME,
+    HTTP_BASIC_AUTH_PASSWORD: process.env.HTTP_BASIC_AUTH_PASSWORD,
+    BIG_AGI_BUILD: process.env.BIG_AGI_BUILD,
   },
 });

@@ -6,9 +6,28 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from '@trpc/server';
+import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
+import { db } from '~/server/prisma/db';
+import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+
+import {
+  getAuth,
+  type SignedInAuthObject,
+  type SignedOutAuthObject,
+} from '@clerk/nextjs/server'
+
+interface AuthContext {
+  auth: SignedInAuthObject | SignedOutAuthObject;
+}
+
+const createInnerTRPCContext = async({ auth }: AuthContext) => {
+  return {
+    db,
+    auth,
+  };
+};
 
 /**
  * 1. CONTEXT
@@ -17,16 +36,17 @@ import { ZodError } from 'zod';
  *
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
-export const createTRPCFetchContext = ({ req /*, resHeaders*/ }: { req: Request; resHeaders: Headers; }) => {
-  // const user = { name: req.headers.get('username') ?? 'anonymous' };
-  // return { req, resHeaders };
-  return {
-    // only used by Backend Analytics
-    hostName: req.headers?.get('host') ?? 'localhost',
-  };
+// export const createTRPCContext = ({ req /*, resHeaders*/ }: { req: Request; resHeaders: Headers; }) => {
+//   // return {
+//   //   // only used by Backend Analytics
+//   //   hostName: req.headers?.get('host') ?? 'localhost',
+//   // };
+//   return createInnerTRPCContext({ auth: getAuth(req) });
+// };
+
+export const createTRPCContext = (opts: CreateNextContextOptions) => {
+  return createInnerTRPCContext({auth: getAuth(opts.req)});
 };
-
-
 /**
  * 2. INITIALIZATION
  *
@@ -34,7 +54,7 @@ export const createTRPCFetchContext = ({ req /*, resHeaders*/ }: { req: Request;
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-const t = initTRPC.context<typeof createTRPCFetchContext>().create({
+const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
     return {
@@ -46,6 +66,14 @@ const t = initTRPC.context<typeof createTRPCFetchContext>().create({
       },
     };
   },
+});
+
+const isAuthed = t.middleware(({ next, ctx }) => {
+  if (!ctx.auth.userId) {
+    throw new TRPCError({code: 'UNAUTHORIZED'});
+  }
+
+  return next();
 });
 
 /**
@@ -70,3 +98,4 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+export const protectedProcedure = publicProcedure.use(isAuthed);
