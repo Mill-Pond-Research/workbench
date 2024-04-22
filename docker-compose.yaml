@@ -6,7 +6,10 @@ version: '3.9'
 
 services:
   big-agi:
-    image: ghcr.io/enricoros/big-agi:latest
+    # image: ghcr.io/enricoros/big-agi:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     env_file:
