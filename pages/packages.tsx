@@ -5,6 +5,9 @@ import type { GetServerSideProps } from "next";
 
 import { apiQuery as api } from '~/common/util/trpc.client';
 
+import React from 'react';
+import { Typography, Button, Container, Grid, Card, CardContent, CardActions, Box } from '@mui/joy';
+
 
 // @ts-expect-error leave this alone
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -45,31 +48,33 @@ const PackagesPage = () => {
   };
 
   return (
-    <section className="mt-10 flex flex-col gap-8">
-      <header className="flex w-full flex-col gap-3">
-        <h1 className="text-center text-4xl font-extrabold tracking-tight">
-          Select a Plan
-        </h1>
-        <SignOutButton>
-          <button className="mx-auto w-min whitespace-nowrap text-center font-bold">
-            Sign Out
-          </button>
-        </SignOutButton>
-      </header>
-      <div className="flex gap-2.5">
-        <div className="flex h-40 w-1/2 flex-col justify-between border border-neutral-950 bg-neutral-100 p-5">
-          <h2 className="text-center text-2xl font-extrabold tracking-tight">
-            $40 a Month
-          </h2>
-          <button
-            onClick={() => handleGoToSubscriptionCheckoutSession()}
-            className="border border-indigo-950 bg-indigo-700 py-3 text-xl font-extrabold text-neutral-100"
-          >
-            Subscribe
-          </button>
-        </div>
-      </div>
-    </section>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh"
+      sx={{ backgroundColor: 'background.default', p: 1 }}
+    >
+      <Card sx={{ minWidth: 275 }}>
+        <CardContent>
+          <Typography variant="plain" component="div">
+          Try OpenWorkbench!
+          </Typography>
+
+          <Typography variant="plain" component="p" sx={{ fontWeight: 'bold', mt: 2 }}>
+            Price: <span style={{ fontWeight: 'bold' }}>$39/month</span>
+          </Typography>
+          <Box mt={2}>
+            <Button variant="solid" 
+              color="primary"
+              onClick={handleGoToSubscriptionCheckoutSession}
+            >
+              Subscribe
+            </Button>
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 
